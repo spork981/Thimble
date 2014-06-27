@@ -16,6 +16,7 @@ GcodeStack::GcodeStack() {
     line = 0;
     capacity = 30; // good for now - needs testing
     buffer = new GcodeInstruction[capacity];
+    buffersize = 0;
     pushposition = 0;
     pop_position = 0;
 }
@@ -32,6 +33,7 @@ int GcodeStack::pushAndParse(String input) {
 /* Put a G-code object at the end of the buffer. */
 int GcodeStack::pushBuffer(GcodeInstruction gcode) {
     buffer[pushposition] = gcode;
+    buffersize++;
     
     pushposition++;
     if(pushposition >= capacity)
@@ -46,7 +48,8 @@ int GcodeStack::pushBuffer(GcodeInstruction gcode) {
 /* Take the first G-code object from the buffer and return it. */
 GcodeInstruction GcodeStack::popBuffer() {
     GcodeInstruction gcode = buffer[pop_position];
-
+    buffersize--;
+    
     pop_position++;
     if(pop_position >= capacity)
         pop_position = 0;    

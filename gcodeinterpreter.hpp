@@ -59,6 +59,7 @@ private:
     byte capacity;
     byte pushposition;
     byte pop_position;
+    byte buffersize;
 };
 
 #endif	/* GCODEINTERPRETER_HPP */
