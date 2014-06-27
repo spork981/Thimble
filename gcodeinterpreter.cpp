@@ -57,6 +57,11 @@ GcodeInstruction GcodeStack::popBuffer() {
     return gcode;
 }
 
+/* Look at the next instruction without removing it from the buffer */
+GcodeInstruction GcodeStack::peekBuffer() {
+    return buffer[pop_position];
+}
+
 /* Turn a string (one line of G-code) into a usable instruction */
 GcodeInstruction GcodeStack::parseString(String input) {
     GcodeInstruction gcode;

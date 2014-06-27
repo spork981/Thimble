@@ -44,6 +44,7 @@ public:
     int pushAndParse(String);
     int pushBuffer(GcodeInstruction);
     GcodeInstruction popBuffer();
+    GcodeInstruction peekBuffer();
     byte checkSum();
     int getLine();
 protected:
