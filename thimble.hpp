@@ -20,6 +20,16 @@
 //   speed up the firmware, at the cost of command checking.
 //#define CHECKSUM
 
+// Steps per millimeter.
+#define XSTEP 8
+#define YSTEP 8
+#define ZSTEP 12
+
+// Shift register pins, if used.
+#define SR_LATCHPIN 8
+#define SR_DATAPIN  11
+#define SR_CLOCKPIN 12
+
 // X, Y, and Z endstop pins, as well as inverted statuses for each of them.
 //  Uncomment the *STOP_INVERT definitions to _enable_ inversion.
 #define XSTOP 2
