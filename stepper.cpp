@@ -64,6 +64,8 @@ int BipolarStepper::move(int step) {
         // at some point also check endstops
     }
     
+    // these will need delays here later on
+    
     return step; // should be 0 if nothing unexpected happened
 }
 
@@ -95,6 +97,7 @@ int ShiftStepper::move(int step) {
                 break;
             case 3:
                 sr->shiftdata[id] = 0b0011;
+                break;
         }
         
         // update shift registers
@@ -120,6 +123,8 @@ int ShiftStepper::move(int step) {
         
         // at some point also check endstops
     }
+    
+    // these will need delays here later on
     
     return step;
 }
