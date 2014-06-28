@@ -46,9 +46,9 @@ void setup() {
 
     coord = new Cartesian();
     shiftregister = ShiftRegister(SR_CLOCKPIN, SR_LATCHPIN, SR_DATAPIN, 1);
-    stepperx = new ShiftStepper(shiftregister, 0);    // there will be some sort of
-    steppery = new ShiftStepper(shiftregister, 1);    // preprocessor setting for these, someday
-    stepperz = new BipolarStepper(4, 5, 6, 7);
+    stepperx = new XSTEPPER_TYPE(shiftregister, 0);    // there will be some sort of
+    steppery = new YSTEPPER_TYPE(shiftregister, 1);    // preprocessor setting for these, someday
+    stepperz = new ZSTEPPER_TYPE(4, 5, 6, 7);
     ssm = StepperStateMachine(stepperx, steppery, stepperz);
     
     Serial.begin(115200);

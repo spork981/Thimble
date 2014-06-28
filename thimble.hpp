@@ -34,6 +34,12 @@
 #define SR_DATAPIN  11
 #define SR_CLOCKPIN 12
 
+// X, Y, and Z steppers. Use ShiftStepper if it is a motor driven through a
+// shift register, or BipolarStepper if the coils are driven by the Arduino.
+#define XSTEPPER_TYPE ShiftStepper
+#define YSTEPPER_TYPE ShiftStepper
+#define ZSTEPPER_TYPE BipolarStepper
+
 // X, Y, and Z endstop pins, as well as inverted statuses for each of them.
 //  Uncomment the *STOP_INVERT definitions to _enable_ inversion.
 #define XSTOP 2
