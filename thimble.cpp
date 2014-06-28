@@ -17,9 +17,22 @@ void loop();
 String input = "";
 GcodeStack gcs;
 ShiftRegister shiftregister;
-ShiftStepper   stepperx;
-ShiftStepper   steppery;
-BipolarStepper stepperz;
+StepperStateMachine ssm;
+CoordSystem* coord = 0;
+
+Stepper*   stepperx;
+Stepper*   steppery;
+Stepper* stepperz;
+
+void moveHead(long position[3]) {
+    // for now, we're assuming given Gcode is in mm
+    // also, we're only moving one axis at a time - this may need some
+    // redesigning to move multiple steppers at once
+    
+    ssm.moveX(coord->moveX(position[0] * XSTEP / PRECISION));
+    ssm.moveY(coord->moveY(position[0] * YSTEP / PRECISION));
+    ssm.moveZ(coord->moveZ(position[0] * ZSTEP / PRECISION));
+}
 
 void setup() {
 #ifdef WATCHDOG
@@ -31,27 +44,18 @@ void setup() {
     pinMode(STATLED, OUTPUT); // status LED
     input.reserve(127);
 
-    shiftregister(SR_CLOCKPIN, SR_LATCHPIN, SR_DATAPIN, 1);
-    stepperx(shiftregister, 0);    // there will be some sort of
-    steppery(shiftregister, 1);    // preprocessor setting for these, someday
-    stepperz(4, 5, 6, 7);
+    coord = new Cartesian();
+    shiftregister = ShiftRegister(SR_CLOCKPIN, SR_LATCHPIN, SR_DATAPIN, 1);
+    stepperx = new ShiftStepper(shiftregister, 0);    // there will be some sort of
+    steppery = new ShiftStepper(shiftregister, 1);    // preprocessor setting for these, someday
+    stepperz = new BipolarStepper(4, 5, 6, 7);
+    ssm = StepperStateMachine(stepperx, steppery, stepperz);
     
     Serial.begin(115200);
     Serial.println("ready.");
 }
 
 void loop() {
-#ifdef WATCHDOG
-    wdt_reset();
-#endif
-    
-    /*
-    digitalWrite(STATLED, HIGH);
-    delay(500);
-    digitalWrite(STATLED, LOW);
-    delay(500);
-     */
-    
 #ifdef WATCHDOG
     wdt_reset();
 #endif
@@ -97,13 +101,6 @@ void loop() {
         input = "";
     }
     
-}
-
-void moveHead(long position[3]) {
-    // for now, we're assuming given Gcode is in mm
-    // also, we're only moving one axis at a time - this may need some
-    // redesigning to move multiple steppers at once
-    stepperx.move(position[0] * XSTEP / PRECISION);
-    steppery.move(position[1] * YSTEP / PRECISION);
-    stepperz.move(position[2] * ZSTEP / PRECISION);
+    ssm.updateSteppers();
+    
 }

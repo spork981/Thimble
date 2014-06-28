@@ -9,6 +9,9 @@
 
 #include "thimble.hpp"
 
+ShiftRegister::ShiftRegister() {
+}
+
 ShiftRegister::ShiftRegister(int clockpin, int latchpin, int datapin, int numchips) {
     clkpin = clockpin;
     lthpin = latchpin;

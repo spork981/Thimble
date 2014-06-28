@@ -32,7 +32,7 @@ public:
     int moveZ(int step);
     
 private:
-    Stepper stepperX, stepperY, stepperZ;
+    Stepper *stepperX, *stepperY, *stepperZ;
 };
 
 /* Add other coordinate systems for strange printers (SCARA, delta, etc.) here. */

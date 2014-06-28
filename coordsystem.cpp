@@ -19,15 +19,15 @@ Cartesian::Cartesian() {
 /* If this were a more complex coordinate system, funny math stuff would happen here */
 int Cartesian::moveX(int step) {
     positionX += step;
-    return stepperX.move(step);
+    return step;
 }
 
 int Cartesian::moveY(int step) {
     positionY += step;
-    return stepperY.move(step);
+    return step;
 }
 
 int Cartesian::moveZ(int step) {
     positionZ += step;
-    return stepperZ.move(step);
+    return step;
 }
