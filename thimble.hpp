@@ -18,7 +18,7 @@
 
 // Maximum steps per second. If set too high, your steppers won't move and may
 //   damage themselves!
-#define STEPS_PER_SECOND  100
+#define STEPS_PER_SECOND  200
 
 // Check each line with G-code's checksum algorithm. Commenting this out will
 //   speed up the firmware, at the cost of command checking.
