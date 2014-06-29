@@ -53,6 +53,8 @@ void setup() {
     ssm = StepperStateMachine(&sensors, stepperx, steppery, stepperz);
     
     Serial.begin(115200);
+    Serial.print(freeMem()); // we don't want any stack crashes
+    Serial.println(" bytes free");
     Serial.println("ready.");
 }
 
