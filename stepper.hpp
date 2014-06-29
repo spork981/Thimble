@@ -73,6 +73,7 @@ public:
     void moveY(int);
     void moveZ(int);
     //moveE(int);
+    void home(int[3]);
     int getX();
     int getY();
     int getZ();

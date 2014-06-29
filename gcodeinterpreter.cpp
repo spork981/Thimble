@@ -173,9 +173,30 @@ GcodeInstruction GcodeStack::parseG(int code, int cursor, String input) {
                         g.argument[3] = f * PRECISION;
                         break;
                     }
-                    //case 'F':    // we're ignoring feedrate for now
+                    case 'F':
+                    {
+                        float f = atof(input.substring(cursor + 1).c_str());
+                        g.argument[4] = f * PRECISION;
+                        break;
+                    }
                 }
-            }            
+            }
+            break;
+        case G28:
+            for(; cursor<input.length(); cursor++) {
+                switch(input[cursor]) {
+                    case 'X':
+                        g.argument[0] = 1;
+                        break;
+                    case 'Y':
+                        g.argument[1] = 1;
+                        break;
+                    case 'Z':
+                        g.argument[2] = 1;
+                        break;                    
+                }
+            }
+            break;
         default:
             break;
     }

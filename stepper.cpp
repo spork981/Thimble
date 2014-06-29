@@ -125,7 +125,8 @@ void StepperStateMachine::moveX(int steps) {
     xstepper_steps = abs(steps) - 1;    
     // set the direction of the motor, depending on whether # of steps is positive or negative
     xstepper->setDirection((steps > 0) ? STEP_FORWARD : STEP_BACK);
-    xstepper->step();
+    if(sensors->checkXStop() == LOW)
+        xstepper->step();
 }
 
 void StepperStateMachine::moveY(int steps) {
@@ -136,7 +137,8 @@ void StepperStateMachine::moveY(int steps) {
     ystepper_steps = abs(steps) - 1;    
     // set the direction of the motor, depending on whether # of steps is positive or negative
     ystepper->setDirection((steps > 0) ? STEP_FORWARD : STEP_BACK);
-    ystepper->step();
+    if(sensors->checkYStop() == LOW)
+        ystepper->step();
 }
 
 void StepperStateMachine::moveZ(int steps) {
@@ -147,7 +149,56 @@ void StepperStateMachine::moveZ(int steps) {
     zstepper_steps = abs(steps) - 1;
     // set the direction of the motor, depending on whether # of steps is positive or negative
     zstepper->setDirection((steps > 0) ? STEP_FORWARD : STEP_BACK);
-    zstepper->step();
+    if(sensors->checkZStop() == LOW)
+        zstepper->step();
+}
+
+// Note: this is a blocking action! (uses delays instead of millis())
+void StepperStateMachine::home(int axes[3]) {
+    // quickly move axes
+    moveX(axes[0]);
+    moveY(axes[1]);
+    moveZ(axes[2]);
+    
+    while(xstepper_steps > 0 && ystepper_steps > 0 && zstepper_steps > 0) {
+        delay(5);
+#ifdef WATCHDOG
+        wd_reset();
+#endif
+    }
+    
+    // now move them up, and back towards home slowly
+    xstepper->setDirection(STEP_FORWARD);
+    ystepper->setDirection(STEP_FORWARD);
+    zstepper->setDirection(STEP_FORWARD);
+    for(int i=0; i<50; i++) {
+        if(axes[0] > 0) 
+            xstepper->step();
+        if(axes[1] > 0) 
+            ystepper->step();
+        if(axes[2] > 0) 
+            zstepper->step();
+        delay(5); // TODO: replace this with speed setting in hpp
+    }
+    
+    xstepper->setDirection(STEP_BACK);
+    ystepper->setDirection(STEP_BACK);
+    zstepper->setDirection(STEP_BACK);
+    while(sensors->checkXStop() != HIGH) {
+        xstepper->step();
+        delay(10);
+    }
+    
+    while(sensors->checkYStop() != HIGH) {
+        ystepper->step();
+        delay(10);
+    }
+    
+    while(sensors->checkZStop() != HIGH) {
+        zstepper->step();
+        delay(10);
+    }
+    // now we're homed!
 }
 
 int StepperStateMachine::updateSteppers() {
@@ -156,7 +207,7 @@ int StepperStateMachine::updateSteppers() {
         xstepper_last = millis();
         xstepper_steps--;
         
-        if(sensors->checkXStop() == HIGH)
+        if(sensors->checkXStop() == HIGH) // hmm, maybe check endstops only if close to home
             returnstatus = returnstatus ^ 0b1;
         else
             xstepper->step();

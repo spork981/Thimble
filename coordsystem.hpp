@@ -17,10 +17,12 @@ public:
     virtual int moveX(int step) = 0;
     virtual int moveY(int step) = 0;
     virtual int moveZ(int step) = 0;
-    
+    virtual int homeX() = 0;
+    virtual int homeY() = 0;
+    virtual int homeZ() = 0;
 protected:
     int distanceX, distanceY, distanceZ;
-    int positionX, positionY, positionZ;
+    long positionX, positionY, positionZ;
 };
 
 /* Cartesian coordinate system - default */
@@ -30,7 +32,9 @@ public:
     int moveX(int step);
     int moveY(int step);
     int moveZ(int step);
-    
+    int homeX();
+    int homeY();
+    int homeZ();
 private:
     Stepper *stepperX, *stepperY, *stepperZ;
 };

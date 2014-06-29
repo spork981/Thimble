@@ -31,3 +31,21 @@ int Cartesian::moveZ(int step) {
     positionZ += step;
     return step;
 }
+
+int Cartesian::homeX() {
+    long move = -positionX;
+    positionX = 0;
+    return move;
+}
+
+int Cartesian::homeY() {
+    long move = -positionY;
+    positionY = 0;
+    return move;
+}
+
+int Cartesian::homeZ() {
+    long move = -positionZ;
+    positionZ = 0;
+    return move;
+}

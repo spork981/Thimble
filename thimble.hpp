@@ -68,6 +68,9 @@
 
 int freeMem();
 
+void moveHead(long position[4]);
+void homeHead(long position[3]);
+
 /* 8-bit shift register code (ignore if you aren't using any for steppers)
  * 
  * Note: due to the current design of this code, shift registers will most likely

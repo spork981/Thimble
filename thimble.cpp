@@ -25,13 +25,6 @@ Stepper*   stepperx;
 Stepper*   steppery;
 Stepper* stepperz;
 
-void moveHead(long position[3]) {
-    // for now, we're assuming given Gcode is in mm    
-    ssm.moveX(coord->moveX(position[0] * XSTEP / PRECISION));
-    ssm.moveY(coord->moveY(position[0] * YSTEP / PRECISION));
-    ssm.moveZ(coord->moveZ(position[0] * ZSTEP / PRECISION));
-}
-
 void setup() {
 #ifdef WATCHDOG
     wdt_disable(); // just in case
@@ -99,6 +92,8 @@ void loop() {
             case G0:
             case G1:
                 moveHead(gci.argument);
+            case G28:
+                homeHead(gci.argument);
         }
         
         input = "";
