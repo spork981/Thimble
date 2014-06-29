@@ -169,12 +169,8 @@ GcodeInstruction GcodeStack::parseG(int code, int cursor, String input) {
                     }
                     case 'E':
                     {
-                        Serial.println(input.substring(cursor).c_str());
                         float f = atof(input.substring(cursor + 1).c_str());
-                        Serial.println(f);
                         g.argument[3] = f * PRECISION;
-                        Serial.println(f * PRECISION);
-                        Serial.println(g.argument[3]);
                         break;
                     }
                     //case 'F':    // we're ignoring feedrate for now
