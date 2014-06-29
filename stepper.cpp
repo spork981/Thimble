@@ -110,7 +110,8 @@ void ShiftStepper::step() {
 
 }
 
-StepperStateMachine::StepperStateMachine(Stepper* x, Stepper* y, Stepper* z) {
+StepperStateMachine::StepperStateMachine(SensorSystem* sens, Stepper* x, Stepper* y, Stepper* z) {
+    sensors  = sens;
     xstepper = x;
     ystepper = y;
     zstepper = z;
@@ -150,29 +151,36 @@ void StepperStateMachine::moveZ(int steps) {
 }
 
 int StepperStateMachine::updateSteppers() {
+    byte returnstatus = 0;
     if(xstepper_steps > 0 && millis() - xstepper_last > (1000 / STEPS_PER_SECOND)) {
         xstepper_last = millis();
         xstepper_steps--;
         
-        // endstop check goes here
-        xstepper->step();
+        if(sensors->checkXStop() == HIGH)
+            returnstatus = returnstatus ^ 0b1;
+        else
+            xstepper->step();
     }
     
     if(ystepper_steps > 0 && millis() - ystepper_last > (1000 / STEPS_PER_SECOND)) {
         ystepper_last = millis();
         ystepper_steps--;
 
-        // endstop check goes here
-        ystepper->step();
+        if(sensors->checkYStop() == HIGH)
+            returnstatus = returnstatus ^ 0b10;
+        else
+            ystepper->step();
     }
     
     if(zstepper_steps > 0 && millis() - zstepper_last > (1000 / STEPS_PER_SECOND)) {
         zstepper_last = millis();
         zstepper_steps--;
         
-        // endstop check goes here
-        zstepper->step();
+        if(sensors->checkZStop() == HIGH)
+            returnstatus = returnstatus ^ 0b100;
+        else
+            zstepper->step();
     }
     
-    return 0; // or nonzero if an error is found
+    return returnstatus; // or nonzero if an error is found
 }

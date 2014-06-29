@@ -41,10 +41,12 @@
 #define ZSTEPPER_TYPE BipolarStepper
 
 // X, Y, and Z endstop pins, as well as inverted statuses for each of them.
-//  Uncomment the *STOP_INVERT definitions to _enable_ inversion.
-#define XSTOP 2
-#define YSTOP 3
-#define ZSTOP 4
+//  Uncomment the *STOP_INVERT definitions to _enable_ inversion (if you have
+//  NC switches - leave them commented out if you have Normally Open endstops, 
+//  which is probably a bad idea anyway).
+#define XSTOP_PIN A0
+#define YSTOP_PIN A1
+#define ZSTOP_PIN A2
 //#define XSTOP_INVERT
 //#define YSTOP_INVERT
 //#define ZSTOP_INVERT
@@ -87,7 +89,8 @@ public:
  *  
  */
 class SensorSystem {
-    SensorSystem();
+public:
+    SensorSystem() { };
     bool checkXStop();
     bool checkYStop();
     bool checkZStop();    

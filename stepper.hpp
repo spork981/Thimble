@@ -67,7 +67,7 @@ public:
 class StepperStateMachine {
 public:
     StepperStateMachine() { };
-    StepperStateMachine(Stepper*, Stepper*, Stepper*);
+    StepperStateMachine(SensorSystem*, Stepper*, Stepper*, Stepper*);
     int updateSteppers();
     void moveX(int);
     void moveY(int);
@@ -77,6 +77,7 @@ public:
     int getY();
     int getZ();
 private:
+    SensorSystem *sensors;
     Stepper *xstepper, *ystepper, *zstepper;
     unsigned long xstepper_last, ystepper_last, zstepper_last;      // last time the 
                                                                     // steppers stepped

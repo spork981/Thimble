@@ -18,6 +18,7 @@ String input = "";
 GcodeStack gcs;
 ShiftRegister shiftregister;
 StepperStateMachine ssm;
+SensorSystem        sensors;
 CoordSystem* coord = 0;
 
 Stepper*   stepperx;
@@ -25,10 +26,7 @@ Stepper*   steppery;
 Stepper* stepperz;
 
 void moveHead(long position[3]) {
-    // for now, we're assuming given Gcode is in mm
-    // also, we're only moving one axis at a time - this may need some
-    // redesigning to move multiple steppers at once
-    
+    // for now, we're assuming given Gcode is in mm    
     ssm.moveX(coord->moveX(position[0] * XSTEP / PRECISION));
     ssm.moveY(coord->moveY(position[0] * YSTEP / PRECISION));
     ssm.moveZ(coord->moveZ(position[0] * ZSTEP / PRECISION));
@@ -42,6 +40,9 @@ void setup() {
 #endif
     
     pinMode(STATLED, OUTPUT); // status LED
+    pinMode(XSTOP_PIN, INPUT);
+    pinMode(YSTOP_PIN, INPUT);
+    pinMode(ZSTOP_PIN, INPUT);
     input.reserve(127);
 
     coord = new Cartesian();
@@ -49,7 +50,7 @@ void setup() {
     stepperx = new XSTEPPER_TYPE(shiftregister, 0);    // there will be some sort of
     steppery = new YSTEPPER_TYPE(shiftregister, 1);    // preprocessor setting for these, someday
     stepperz = new ZSTEPPER_TYPE(4, 5, 6, 7);
-    ssm = StepperStateMachine(stepperx, steppery, stepperz);
+    ssm = StepperStateMachine(&sensors, stepperx, steppery, stepperz);
     
     Serial.begin(115200);
     Serial.println("ready.");
