@@ -49,3 +49,20 @@ int Cartesian::homeZ() {
     positionZ = 0;
     return move;
 }
+
+/* If an axis has hit its endstop prematurely, update axis position and throw a warning */
+int Cartesian::checkHome(int status) {
+    if(status == 0) // no errors
+        return 0;
+    
+    if(status & 0b1 == 1) // x axis
+        positionX = 0;
+    
+    if(status & 0b10 == 1) // y axis
+        positionY = 0;
+    
+    if(status & 0b100 == 1) // z axis
+        positionZ = 0;    
+    
+    return 1;
+}

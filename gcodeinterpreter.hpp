@@ -29,6 +29,9 @@
 #define M1      102
 #define M112    212
 
+#define G_OK     "ok"
+#define G_RESEND "rs"
+#define G_ERROR  "!!"
 
 class GcodeInstruction {
 public:

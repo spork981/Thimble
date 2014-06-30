@@ -100,7 +100,11 @@ void loop() {
         input = "";
     }
     
-    ssm.updateSteppers();
+    int status = ssm.updateSteppers();
+    status = coord->checkHome(status);
+    if(status != 0) {   // hardware error - we're shutting down
+        Serial.println(G_ERROR);
+    }    
     
     delay(5);
 }

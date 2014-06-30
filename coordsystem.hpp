@@ -20,6 +20,7 @@ public:
     virtual int homeX() = 0;
     virtual int homeY() = 0;
     virtual int homeZ() = 0;
+    virtual int checkHome(int) = 0;
 protected:
     int distanceX, distanceY, distanceZ;
     long positionX, positionY, positionZ;
@@ -35,6 +36,7 @@ public:
     int homeX();
     int homeY();
     int homeZ();
+    int checkHome(int);
 private:
     Stepper *stepperX, *stepperY, *stepperZ;
 };
