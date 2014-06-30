@@ -40,6 +40,14 @@
 #define YSTEPPER_TYPE ShiftStepper
 #define ZSTEPPER_TYPE BipolarStepper
 
+// Stepper motor arguments. For a shift-register stepper, put "shiftregister, #"
+//   where # is the motor ID.  For a Bipolar stepper, it should be the four pins
+//   the Arduino should send pulses to (indirectly, of course - through an H-bridge
+//   or something!)
+#define XSTEPPER_OPTIONS shiftregister, 0
+#define YSTEPPER_OPTIONS shiftregister, 1
+#define ZSTEPPER_OPTIONS 6, 7, 9, 10
+
 // X, Y, and Z endstop pins, as well as inverted statuses for each of them.
 //  Uncomment the *STOP_INVERT definitions to _enable_ inversion (if you have
 //  NC switches - leave them commented out if you have Normally Open endstops, 
