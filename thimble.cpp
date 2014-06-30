@@ -42,7 +42,7 @@ void setup() {
     shiftregister = ShiftRegister(SR_CLOCKPIN, SR_LATCHPIN, SR_DATAPIN, 1);
     stepperx = new XSTEPPER_TYPE(shiftregister, 0);    // there will be some sort of
     steppery = new YSTEPPER_TYPE(shiftregister, 1);    // preprocessor setting for these, someday
-    stepperz = new ZSTEPPER_TYPE(4, 5, 6, 7);
+    stepperz = new ZSTEPPER_TYPE(6, 7, 9, 10);
     ssm = StepperStateMachine(&sensors, stepperx, steppery, stepperz);
     
     Serial.begin(115200);
@@ -64,17 +64,17 @@ void loop() {
             break;
     }
     
-    if(input.length() > 0) {
+    if(input.length() > 1) {
         Serial.print(freeMem()); // we don't want any stack crashes
         Serial.println(" bytes free");
-        
-        Serial.print(input);
+
+        Serial.println(input);
         
         // parse gcode stuff
-        gcs.pushAndParse(input);        
+        gcs.pushAndParse(input);
 
         // strictly debug stuff here - may get removed later
-        GcodeInstruction gci = gcs.peekBuffer();
+        GcodeInstruction gci = gcs.popBuffer();
         Serial.print("gcode instruction: ");
         Serial.println(gci.instruction);
         Serial.print("gcode X: ");
@@ -87,13 +87,14 @@ void loop() {
         Serial.println(gci.argument[3]);     
         Serial.println();
         
-        gci = gcs.popBuffer();
         switch(gci.instruction) {
             case G0:
             case G1:
                 moveHead(gci.argument);
+                break;
             case G28:
                 homeHead(gci.argument);
+                break;
         }
         
         input = "";
@@ -101,4 +102,5 @@ void loop() {
     
     ssm.updateSteppers();
     
+    delay(5);
 }
