@@ -31,6 +31,12 @@ int freeMem() {
     return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
 
+void showMem() {
+    Serial.print("// ");
+    Serial.print(freeMem());
+    Serial.println(" bytes free");
+}
+
 void moveHead(long position[4]) {
     // for now, we're assuming given Gcode is in mm    
     ssm.moveX(coord->moveX(position[0] * XSTEP / PRECISION));

@@ -75,6 +75,7 @@
 #define DRD digitalRead
 
 int freeMem();
+void showMem();
 
 void moveHead(long position[4]);
 void homeHead(long position[3]);

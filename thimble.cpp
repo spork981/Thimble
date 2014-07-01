@@ -46,9 +46,8 @@ void setup() {
     ssm = StepperStateMachine(&sensors, stepperx, steppery, stepperz);
     
     Serial.begin(115200);
-    Serial.print(freeMem()); // we don't want any stack crashes
-    Serial.println(" bytes free");
-    Serial.println("ready.");
+    showMem();
+    Serial.println("start");
 }
 
 void loop() {
@@ -65,9 +64,9 @@ void loop() {
     }
     
     if(input.length() > 1) {
-        Serial.print(freeMem()); // we don't want any stack crashes
-        Serial.println(" bytes free");
+        showMem();
 
+        Serial.print("//");
         Serial.println(input);
         
         // parse gcode stuff
@@ -75,17 +74,16 @@ void loop() {
 
         // strictly debug stuff here - may get removed later
         GcodeInstruction gci = gcs.popBuffer();
-        Serial.print("gcode instruction: ");
+        Serial.print("//gcode instruction: ");
         Serial.println(gci.instruction);
-        Serial.print("gcode X: ");
+        Serial.print("//gcode X: ");
         Serial.println(gci.argument[0]);
-        Serial.print("gcode Y: ");
+        Serial.print("//gcode Y: ");
         Serial.println(gci.argument[1]);
-        Serial.print("gcode Z: ");
+        Serial.print("//gcode Z: ");
         Serial.println(gci.argument[2]);
-        Serial.print("gcode E: ");
-        Serial.println(gci.argument[3]);     
-        Serial.println();
+        Serial.print("//gcode E: ");
+        Serial.println(gci.argument[3]);
         
         switch(gci.instruction) {
             case G0:
@@ -104,7 +102,7 @@ void loop() {
     status = coord->checkHome(status);
     if(status != 0) {   // hardware error - we're shutting down
         Serial.println(G_ERROR);
-    }    
-    
+    }
+
     delay(5);
 }
