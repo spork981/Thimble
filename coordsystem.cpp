@@ -14,6 +14,9 @@ Cartesian::Cartesian() {
     distanceX = 0;
     distanceY = 0;
     distanceZ = 0;
+    positionX = 0;
+    positionY = 0;
+    positionZ = 0;
 }
 
 /* If this were a more complex coordinate system, funny math stuff would happen here */

@@ -32,7 +32,7 @@ int freeMem() {
 }
 
 void showMem() {
-    Serial.print("// ");
+    Serial.print("//");
     Serial.print(freeMem());
     Serial.println(" bytes free");
 }
@@ -40,8 +40,8 @@ void showMem() {
 void moveHead(long position[4]) {
     // for now, we're assuming given Gcode is in mm    
     ssm.moveX(coord->moveX(position[0] * XSTEP / PRECISION));
-    ssm.moveY(coord->moveY(position[0] * YSTEP / PRECISION));
-    ssm.moveZ(coord->moveZ(position[0] * ZSTEP / PRECISION));
+    ssm.moveY(coord->moveY(position[1] * YSTEP / PRECISION));
+    ssm.moveZ(coord->moveZ(position[2] * ZSTEP / PRECISION));
 }
 
 void homeHead(long position[3]) {
