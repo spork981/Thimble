@@ -14,9 +14,6 @@ GcodeInstruction::GcodeInstruction() {
 
 GcodeStack::GcodeStack() {
     line = 0;
-    capacity = 30; // good for now - needs testing
-    buffer = new GcodeInstruction[capacity];
-    buffersize = 0;
     pushposition = 0;
     pop_position = 0;
 }
@@ -32,11 +29,13 @@ int GcodeStack::pushAndParse(String input) {
 
 /* Put a G-code object at the end of the buffer. */
 int GcodeStack::pushBuffer(GcodeInstruction gcode) {
-    buffer[pushposition] = gcode;
-    buffersize++;
+    if(gcode.instruction < 0) // comment or invalid code
+        return 0;
+    
+    buffer[pushposition] = new GcodeInstruction(gcode);
     
     pushposition++;
-    if(pushposition >= capacity)
+    if(pushposition >= CAPACITY)
         pushposition = 0;
     
     if(pushposition == pop_position) // running out of buffer room
@@ -46,19 +45,23 @@ int GcodeStack::pushBuffer(GcodeInstruction gcode) {
 }
 
 /* Take the first G-code object from the buffer and return it. */
-GcodeInstruction GcodeStack::popBuffer() {
-    GcodeInstruction gcode = buffer[pop_position];
-    buffersize--;
+GcodeInstruction *GcodeStack::popBuffer() {
+    GcodeInstruction* gcode = buffer[pop_position];
+    delete buffer[pop_position];
+    buffer[pop_position] = NULL;
     
+    if(gcode == NULL)
+        return gcode;
+        
     pop_position++;
-    if(pop_position >= capacity)
-        pop_position = 0;    
-    
+    if(pop_position >= CAPACITY)
+        pop_position = 0;
+
     return gcode;
 }
 
 /* Look at the next instruction without removing it from the buffer */
-GcodeInstruction GcodeStack::peekBuffer() {
+GcodeInstruction *GcodeStack::peekBuffer() {
     return buffer[pop_position];
 }
 

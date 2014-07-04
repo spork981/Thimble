@@ -66,9 +66,6 @@ void loop() {
     
     if(input.length() > 1) {
         showMem();
-
-        Serial.print("//");
-        Serial.println(input);
         
         // parse gcode stuff
         if(gcs.pushAndParse(input) != 0) {
@@ -76,31 +73,33 @@ void loop() {
         }
 
         // strictly debug stuff here - may get removed later
-        GcodeInstruction gci = gcs.popBuffer();
-        Serial.print("//gcode instruction: ");
-        Serial.println(gci.instruction);
-        Serial.print("//gcode X: ");
-        Serial.println(gci.argument[0]);
-        Serial.print("//gcode Y: ");
-        Serial.println(gci.argument[1]);
-        Serial.print("//gcode Z: ");
-        Serial.println(gci.argument[2]);
-        Serial.print("//gcode E: ");
-        Serial.println(gci.argument[3]);
-        
-        switch(gci.instruction) {
-            case G0:
-            case G1:
-                moveHead(gci.argument);
-                break;
-            case G28:
-                homeHead(gci.argument);
-                break;
+        GcodeInstruction* gci = gcs.popBuffer();
+        if(gci != NULL) {
+            Serial.print("//gcode instruction: ");
+            Serial.println(gci->instruction);
+            Serial.print("//validity: ");
+            Serial.println(gci->cs_valid);
+            Serial.print("//gcode X: ");
+            Serial.println(gci->argument[0]);
+            Serial.print("//gcode Y: ");
+            Serial.println(gci->argument[1]);
+            Serial.print("//gcode Z: ");
+            Serial.println(gci->argument[2]);
+            Serial.print("//gcode E: ");
+            Serial.println(gci->argument[3]);
+
+            switch (gci->instruction) {
+                case G0:
+                case G1:
+                    moveHead(gci->argument);
+                    break;
+                case G28:
+                    homeHead(gci->argument);
+                    break;
+            }
         }
-        
         input = "";
     }
-    
     int status = ssm.updateSteppers();
     status = coord->checkHome(status);
     if(status != 0) {   // hardware error - we're shutting down

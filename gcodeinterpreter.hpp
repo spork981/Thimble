@@ -33,6 +33,8 @@
 #define G_RESEND "rs"
 #define G_ERROR  "!!"
 
+#define CAPACITY 10
+
 class GcodeInstruction {
 public:
     GcodeInstruction();
@@ -46,8 +48,8 @@ public:
     GcodeStack();
     int pushAndParse(String);
     int pushBuffer(GcodeInstruction);
-    GcodeInstruction popBuffer();
-    GcodeInstruction peekBuffer();
+    GcodeInstruction *popBuffer();
+    GcodeInstruction *peekBuffer();
     byte checkSum();
     int getLine();
 protected:
@@ -59,11 +61,9 @@ private:
     int line;
     
     // make our own circular buffer
-    GcodeInstruction *buffer;
-    byte capacity;
+    GcodeInstruction *buffer[CAPACITY];
     byte pushposition;
     byte pop_position;
-    byte buffersize;
 };
 
 #endif	/* GCODEINTERPRETER_HPP */
