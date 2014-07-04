@@ -36,7 +36,7 @@ void setup() {
     pinMode(XSTOP_PIN, INPUT);
     pinMode(YSTOP_PIN, INPUT);
     pinMode(ZSTOP_PIN, INPUT);
-    input.reserve(127);
+    //input.reserve(127);
 
     coord = new Cartesian();
     shiftregister = ShiftRegister(SR_CLOCKPIN, SR_LATCHPIN, SR_DATAPIN, 1);
@@ -58,9 +58,10 @@ void loop() {
     // read the Serial port for commands
     while(Serial.available()) {
         char in = (char) Serial.read();
-        input += in;
         if(in == '\n')
             break;
+        else
+            input += in;
     }
     
     if(input.length() > 1) {
@@ -70,7 +71,9 @@ void loop() {
         Serial.println(input);
         
         // parse gcode stuff
-        gcs.pushAndParse(input);
+        if(gcs.pushAndParse(input) != 0) {
+            Serial.println(G_ERROR);
+        }
 
         // strictly debug stuff here - may get removed later
         GcodeInstruction gci = gcs.popBuffer();
