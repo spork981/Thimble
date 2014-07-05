@@ -205,7 +205,7 @@ void StepperStateMachine::home(int axes[3]) {
 
 int StepperStateMachine::updateSteppers() {
     byte returnstatus = 0;
-    if(xstepper_steps > 0 && millis() - xstepper_last > (1000 / STEPS_PER_SECOND)) {
+    if(xstepper_steps > 0 && millis() - xstepper_last > (1000 / X_STEPS_PER_SECOND)) {
         xstepper_last = millis();
         xstepper_steps--;
         
@@ -216,7 +216,7 @@ int StepperStateMachine::updateSteppers() {
             xstepper->step();
     }
     
-    if(ystepper_steps > 0 && millis() - ystepper_last > (1000 / STEPS_PER_SECOND)) {
+    if(ystepper_steps > 0 && millis() - ystepper_last > (1000 / Y_STEPS_PER_SECOND)) {
         ystepper_last = millis();
         ystepper_steps--;
 
@@ -227,7 +227,7 @@ int StepperStateMachine::updateSteppers() {
             ystepper->step();
     }
     
-    if(zstepper_steps > 0 && millis() - zstepper_last > (1000 / STEPS_PER_SECOND)) {
+    if(zstepper_steps > 0 && millis() - zstepper_last > (1000 / Z_STEPS_PER_SECOND)) {
         zstepper_last = millis();
         zstepper_steps--;
         
