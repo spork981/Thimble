@@ -79,13 +79,13 @@ void loop() {
         if(gci.instruction != G_BAD) {
             Serial.print("//gcode instruction: ");
             Serial.println(gci.instruction);
-            Serial.print("//gcode X: ");
-            Serial.println(gci.argument[0]);
-            Serial.print("//gcode Y: ");
-            Serial.println(gci.argument[1]);
-            Serial.print("//gcode Z: ");
-            Serial.println(gci.argument[2]);
-            Serial.print("//gcode E: ");
+            Serial.print("//gcode X, Y, Z, E: ");
+            Serial.print(gci.argument[0]);
+            Serial.print(", ");
+            Serial.print(gci.argument[1]);
+            Serial.print(", ");
+            Serial.print(gci.argument[2]);
+            Serial.print(", ");
             Serial.println(gci.argument[3]);
 
             switch (gci.instruction) {
