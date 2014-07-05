@@ -43,9 +43,8 @@
 #define ZSTEPPER_OPTIONS 6, 7, 9, 10
 
 // X, Y, and Z endstop pins, as well as inverted statuses for each of them.
-//  Uncomment the *STOP_INVERT definitions to _disable_ inversion (if you have
-//  NC switches - leave them uncommented if you have Normally Open endstops, 
-//  which is probably a bad idea anyway).
+//  Uncomment the *STOP_INVERT definitions to _disable_ inversion (leave them 
+//  uncommented if you have Normally Open endstops, which is probably a bad idea anyway).
 #define XSTOP_PIN A0
 #define YSTOP_PIN A1
 #define ZSTOP_PIN A2
