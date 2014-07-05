@@ -145,7 +145,7 @@ int GcodeStack::parseCommand(unsigned int &cursor, String input) {
 }
 
 /* Parse G-code commands, including parameters. */
-GcodeInstruction GcodeStack::parseG(int code, int cursor, String input) {
+GcodeInstruction GcodeStack::parseG(int code, unsigned int cursor, String input) {
     GcodeInstruction g;
     g.instruction = code;
     
@@ -211,7 +211,7 @@ GcodeInstruction GcodeStack::parseG(int code, int cursor, String input) {
 }
 
 /* Parse G-code commands starting with 'M'. These are mostly RepRap specific */
-GcodeInstruction GcodeStack::parseM(int code, int cursor, String input) {
+GcodeInstruction GcodeStack::parseM(int code, unsigned int cursor, String input) {
     GcodeInstruction m;
     m.instruction = code + 100;
     

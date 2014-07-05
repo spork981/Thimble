@@ -17,7 +17,7 @@ extern CoordSystem* coord;
 ShiftRegister::ShiftRegister() {
 }
 
-ShiftRegister::ShiftRegister(int clockpin, int latchpin, int datapin, int numchips) {
+ShiftRegister::ShiftRegister(byte clockpin, byte latchpin, byte datapin, byte numchips) {
     clkpin = clockpin;
     lthpin = latchpin;
     datpin = datapin;

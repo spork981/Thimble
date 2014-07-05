@@ -56,8 +56,8 @@ public:
 protected:
     GcodeInstruction parseString(String);
     int parseCommand(unsigned int&, String);
-    GcodeInstruction parseG(int, int, String);
-    GcodeInstruction parseM(int, int, String);
+    GcodeInstruction parseG(int, unsigned int, String);
+    GcodeInstruction parseM(int, unsigned int, String);
 private:
     int line;
     

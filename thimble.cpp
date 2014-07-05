@@ -25,6 +25,9 @@ Stepper*   stepperx;
 Stepper*   steppery;
 Stepper* stepperz;
 
+unsigned long statled_time = 0;
+bool statled_status;
+
 void setup() {
 #ifdef WATCHDOG
     wdt_disable(); // just in case
@@ -48,6 +51,10 @@ void setup() {
     stepperz = new ZSTEPPER_TYPE(ZSTEPPER_OPTIONS);
     ssm = StepperStateMachine(&sensors, stepperx, steppery, stepperz);
     
+    statled_time = millis();
+    statled_status = true;
+    DWR(STATLED, statled_status);
+    
     Serial.begin(115200);
     showMem();
     Serial.println("start");
@@ -57,6 +64,12 @@ void loop() {
 #ifdef WATCHDOG
     wdt_reset();
 #endif
+    
+    if(millis() - statled_time > 1000) {
+        statled_time = millis();
+        statled_status = !statled_status;
+        DWR(STATLED, statled_status);
+    }
     
     // read the Serial port for commands
     while(Serial.available()) {

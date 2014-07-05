@@ -8,7 +8,7 @@
 #include "stepper.hpp"
 #include "arduino/wiring_private.h"
 
-BipolarStepper::BipolarStepper(int pin1, int pin2, int pin3, int pin4) {
+BipolarStepper::BipolarStepper(byte pin1, byte pin2, byte pin3, byte pin4) {
     pinA_1 = pin1;
     pinA_2 = pin2;
     pinB_1 = pin3;

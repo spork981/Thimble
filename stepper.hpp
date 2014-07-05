@@ -30,16 +30,16 @@ private:
 class BipolarStepper: public Stepper {
 public:
     BipolarStepper();
-    BipolarStepper(int, int, int, int);
+    BipolarStepper(byte, byte, byte, byte);
     void step();
     void setDirection(bool);
     void stop();
 private:
-    int pinA_1;
-    int pinA_2;
-    int pinB_1;
-    int pinB_2;
-    int stepcount;
+    byte pinA_1;
+    byte pinA_2;
+    byte pinB_1;
+    byte pinB_2;
+    byte stepcount;
     bool direction;
 };
 
@@ -54,7 +54,7 @@ public:
 private:
     ShiftRegister sr;
     int id;
-    int stepcount;
+    byte stepcount;
     bool direction;
 };
 

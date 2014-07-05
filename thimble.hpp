@@ -32,12 +32,12 @@ void homeHead(long position[3]);
 class ShiftRegister {
 public:
     ShiftRegister();
-    ShiftRegister(int, int, int, int);
+    ShiftRegister(byte, byte, byte, byte);
     byte* shiftdata;
     byte numsteppers;
-    int clkpin;
-    int lthpin;
-    int datpin;
+    byte clkpin;
+    byte lthpin;
+    byte datpin;
 };
 
 /* Sensor system for the printer. This includes endstops, thermistors, and other
