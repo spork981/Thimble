@@ -13,6 +13,10 @@ BipolarStepper::BipolarStepper(int pin1, int pin2, int pin3, int pin4) {
     pinA_2 = pin2;
     pinB_1 = pin3;
     pinB_2 = pin4;
+    pinMode(pin1, OUTPUT);
+    pinMode(pin2, OUTPUT);
+    pinMode(pin3, OUTPUT);
+    pinMode(pin4, OUTPUT);
     stepcount = 0;
 }
 
