@@ -251,13 +251,6 @@ int StepperStateMachine::updateSteppers() {
         } else
             zstepper->step();
     }
-    
-    if(xstepper_steps == 0)
-        xstepper->stop();
-    if(ystepper_steps == 0)
-        ystepper->stop();
-    if(zstepper_steps == 0)
-        zstepper->stop();
-    
+         
     return returnstatus; // or nonzero if an error is found
 }

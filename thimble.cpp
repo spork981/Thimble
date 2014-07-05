@@ -96,6 +96,12 @@ void loop() {
                 case G28:
                     homeHead(gci.argument);
                     break;
+                case M0:
+                case M112:
+                    stepperx->stop();
+                    steppery->stop();
+                    stepperz->stop();
+                    break;
             }
         }
         input = "";
