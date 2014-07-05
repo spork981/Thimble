@@ -59,6 +59,14 @@ void BipolarStepper::step() {
         stepcount = 3;
 }
 
+void BipolarStepper::stop() {
+    DWR(pinA_1, LOW);
+    DWR(pinA_2, LOW);
+    DWR(pinB_1, LOW);
+    DWR(pinB_2, LOW);
+    stepcount = 0;
+}
+
 ShiftStepper::ShiftStepper(ShiftRegister shiftregister, int id) {
     sr = shiftregister;
     this->id = id;
@@ -88,7 +96,7 @@ void ShiftStepper::step() {
     }
 
     // update shift registers    
-    for(int i=0; i<2; i+=2) {
+    for(int i=0; i<sr.numsteppers; i+=2) {
         int data = sr.shiftdata[i];
         data += (sr.shiftdata[i+1] << 4);
         
@@ -106,7 +114,13 @@ void ShiftStepper::step() {
         stepcount = 0;
     else if(stepcount < 0)
         stepcount = 3;
+}
 
+void ShiftStepper::stop() {
+    DWR(sr.lthpin, LOW);
+    shiftOut(sr.datpin, sr.clkpin, MSBFIRST, 0);
+    DWR(sr.lthpin, HIGH);
+    stepcount = 0;
 }
 
 StepperStateMachine::StepperStateMachine(SensorSystem* sens, Stepper* x, Stepper* y, Stepper* z) {
@@ -237,6 +251,13 @@ int StepperStateMachine::updateSteppers() {
         } else
             zstepper->step();
     }
+    
+    if(xstepper_steps == 0)
+        xstepper->stop();
+    if(ystepper_steps == 0)
+        ystepper->stop();
+    if(zstepper_steps == 0)
+        zstepper->stop();
     
     return returnstatus; // or nonzero if an error is found
 }

@@ -21,6 +21,7 @@ public:
     virtual void step() = 0;
     // virtual void microstep() = 0;     // future feature
     virtual void setDirection(bool) = 0;
+    virtual void stop() = 0;
 private:
     bool direction;
 };
@@ -32,6 +33,7 @@ public:
     BipolarStepper(int, int, int, int);
     void step();
     void setDirection(bool);
+    void stop();
 private:
     int pinA_1;
     int pinA_2;
@@ -48,6 +50,7 @@ public:
     ShiftStepper(ShiftRegister, int);
     void step();
     void setDirection(bool);
+    void stop();
 private:
     ShiftRegister sr;
     int id;

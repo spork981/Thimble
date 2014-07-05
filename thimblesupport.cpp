@@ -21,6 +21,7 @@ ShiftRegister::ShiftRegister(int clockpin, int latchpin, int datapin, int numchi
     clkpin = clockpin;
     lthpin = latchpin;
     datpin = datapin;
+    numsteppers = numchips * 2; // has to be a multiple of 2
     shiftdata = new byte[numchips * 2];
 }
 

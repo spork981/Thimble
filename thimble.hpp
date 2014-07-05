@@ -34,6 +34,7 @@ public:
     ShiftRegister();
     ShiftRegister(int, int, int, int);
     byte* shiftdata;
+    byte numsteppers;
     int clkpin;
     int lthpin;
     int datpin;
