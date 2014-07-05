@@ -21,7 +21,7 @@ ShiftRegister::ShiftRegister(int clockpin, int latchpin, int datapin, int numchi
     clkpin = clockpin;
     lthpin = latchpin;
     datpin = datapin;
-    shiftdata = new char[numchips];
+    shiftdata = new byte[numchips * 2];
 }
 
 // from https://learn.adafruit.com/memories-of-an-arduino/measuring-free-memory

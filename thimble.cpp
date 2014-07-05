@@ -36,6 +36,9 @@ void setup() {
     pinMode(XSTOP_PIN, INPUT);
     pinMode(YSTOP_PIN, INPUT);
     pinMode(ZSTOP_PIN, INPUT);
+    pinMode(SR_CLOCKPIN, OUTPUT);
+    pinMode(SR_LATCHPIN, OUTPUT);
+    pinMode(SR_DATAPIN, OUTPUT);
     //input.reserve(127);
 
     coord = new Cartesian();

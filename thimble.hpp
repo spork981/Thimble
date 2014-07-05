@@ -33,7 +33,7 @@ class ShiftRegister {
 public:
     ShiftRegister();
     ShiftRegister(int, int, int, int);
-    char* shiftdata;
+    byte* shiftdata;
     int clkpin;
     int lthpin;
     int datpin;

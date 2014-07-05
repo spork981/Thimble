@@ -87,17 +87,16 @@ void ShiftStepper::step() {
             break;
     }
 
-    // update shift registers
-    for(int i=0; i<id; i++) {
-        if(i % 2 == 0)
-            DWR(sr.lthpin, LOW);
-
-        shiftOut(sr.datpin, sr.clkpin, MSBFIRST, sr.shiftdata[i]);
-
-        if(i % 2 == 0)
-            DWR(sr.lthpin, HIGH);
+    // update shift registers    
+    for(int i=0; i<2; i+=2) {
+        int data = sr.shiftdata[i];
+        data += (sr.shiftdata[i+1] << 4);
+        
+        DWR(sr.lthpin, LOW);
+        shiftOut(sr.datpin, sr.clkpin, MSBFIRST, data);
+        DWR(sr.lthpin, HIGH);
     }
-
+    
     if(direction)
         stepcount++;
     else
@@ -115,6 +114,9 @@ StepperStateMachine::StepperStateMachine(SensorSystem* sens, Stepper* x, Stepper
     xstepper = x;
     ystepper = y;
     zstepper = z;
+    xstepper_steps = 0;
+    ystepper_steps = 0;
+    zstepper_steps = 0;
 }
 
 void StepperStateMachine::moveX(int steps) {
@@ -207,9 +209,10 @@ int StepperStateMachine::updateSteppers() {
         xstepper_last = millis();
         xstepper_steps--;
         
-        if(sensors->checkXStop() == HIGH) // hmm, maybe check endstops only if close to home
+        if(sensors->checkXStop() == HIGH) { // hmm, maybe check endstops only if close to home
             returnstatus = returnstatus ^ 0b1;
-        else
+            xstepper_steps = 0;
+        } else
             xstepper->step();
     }
     
@@ -217,9 +220,10 @@ int StepperStateMachine::updateSteppers() {
         ystepper_last = millis();
         ystepper_steps--;
 
-        if(sensors->checkYStop() == HIGH)
+        if(sensors->checkYStop() == HIGH) {
             returnstatus = returnstatus ^ 0b10;
-        else
+            ystepper_steps = 0;
+        } else
             ystepper->step();
     }
     
@@ -227,9 +231,10 @@ int StepperStateMachine::updateSteppers() {
         zstepper_last = millis();
         zstepper_steps--;
         
-        if(sensors->checkZStop() == HIGH)
+        if(sensors->checkZStop() == HIGH) {
             returnstatus = returnstatus ^ 0b100;
-        else
+            zstepper_steps = 0;
+        } else
             zstepper->step();
     }
     
