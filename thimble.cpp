@@ -58,13 +58,12 @@ void loop() {
     // read the Serial port for commands
     while(Serial.available()) {
         char in = (char) Serial.read();
+        input += in;
         if(in == '\n')
-            break;
-        else
-            input += in;
+            break;            
     }
     
-    if(input.length() > 1) {
+    if(input.length() > 1 && input[input.length() - 1] == '\n') {
         showMem();
         
         // parse gcode stuff
@@ -73,28 +72,26 @@ void loop() {
         }
 
         // strictly debug stuff here - may get removed later
-        GcodeInstruction* gci = gcs.popBuffer();
-        if(gci != NULL) {
+        GcodeInstruction gci = gcs.popBuffer();
+        if(gci.instruction != G_BAD) {
             Serial.print("//gcode instruction: ");
-            Serial.println(gci->instruction);
-            Serial.print("//validity: ");
-            Serial.println(gci->cs_valid);
+            Serial.println(gci.instruction);
             Serial.print("//gcode X: ");
-            Serial.println(gci->argument[0]);
+            Serial.println(gci.argument[0]);
             Serial.print("//gcode Y: ");
-            Serial.println(gci->argument[1]);
+            Serial.println(gci.argument[1]);
             Serial.print("//gcode Z: ");
-            Serial.println(gci->argument[2]);
+            Serial.println(gci.argument[2]);
             Serial.print("//gcode E: ");
-            Serial.println(gci->argument[3]);
+            Serial.println(gci.argument[3]);
 
-            switch (gci->instruction) {
+            switch (gci.instruction) {
                 case G0:
                 case G1:
-                    moveHead(gci->argument);
+                    moveHead(gci.argument);
                     break;
                 case G28:
-                    homeHead(gci->argument);
+                    homeHead(gci.argument);
                     break;
             }
         }
@@ -106,5 +103,4 @@ void loop() {
         Serial.println(G_ERROR);
     }
 
-    delay(5);
 }

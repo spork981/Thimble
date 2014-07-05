@@ -45,24 +45,27 @@ int GcodeStack::pushBuffer(GcodeInstruction gcode) {
 }
 
 /* Take the first G-code object from the buffer and return it. */
-GcodeInstruction *GcodeStack::popBuffer() {
+GcodeInstruction GcodeStack::popBuffer() {
     GcodeInstruction* gcode = buffer[pop_position];
+    GcodeInstruction gci = *gcode; // keep the data when we delete the pointer
+    if(gcode == NULL) {
+        gci.instruction = G_BAD;
+        return gci;
+    }
+
     delete buffer[pop_position];
     buffer[pop_position] = NULL;
     
-    if(gcode == NULL)
-        return gcode;
-        
     pop_position++;
     if(pop_position >= CAPACITY)
         pop_position = 0;
 
-    return gcode;
+    return gci;
 }
 
 /* Look at the next instruction without removing it from the buffer */
-GcodeInstruction *GcodeStack::peekBuffer() {
-    return buffer[pop_position];
+GcodeInstruction GcodeStack::peekBuffer() {
+    return *buffer[pop_position];
 }
 
 /* Turn a string (one line of G-code) into a usable instruction */

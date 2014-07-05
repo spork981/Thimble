@@ -32,6 +32,7 @@
 #define G_OK     "ok"
 #define G_RESEND "rs"
 #define G_ERROR  "!!"
+#define G_BAD   -1
 
 #define CAPACITY 10
 
@@ -48,8 +49,8 @@ public:
     GcodeStack();
     int pushAndParse(String);
     int pushBuffer(GcodeInstruction);
-    GcodeInstruction *popBuffer();
-    GcodeInstruction *peekBuffer();
+    GcodeInstruction popBuffer();
+    GcodeInstruction peekBuffer();
     byte checkSum();
     int getLine();
 protected:
